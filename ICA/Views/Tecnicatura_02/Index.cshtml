@@ -1,0 +1,33 @@
+﻿@model Paginacion_002
+@{
+    ViewData["Title"] = "Tecnicatura en Diseño Digital y Videojuegos";
+}
+
+<div class="background-section">
+    <img src="~/img/tecnicaturas/Videojuegos.jpg" alt="Imagen de fondo" class="background-image">
+    <div class="content">
+        <h1>@ViewData["Title"]</h1>
+        <h2>Presentación</h2>
+        <p>
+            La industria de los videojuegos ha experimentado un crecimiento significativo en las últimas décadas, convirtiéndose en una forma de entretenimiento ampliamente difundida en diversas plataformas y géneros.
+
+            Los avances tecnológicos han mejorado la calidad de los videojuegos en términos de gráficos, jugabilidad, narrativa y características sociales.
+
+            Esto ha tenido un impacto relevante en la cultura, el arte, la educación y la economía.
+
+            También en el mercado laboral, que hoy demanda programadores, diseñadores, artistas y productores, entre los perfiles de mayor demanda para ocupar posiciones en el sector.
+
+            Precisamente, la Tecnicatura en Desarrollo y Producción de Videojuegos surge como respuesta a la creciente necesidad de formar profesionales capacitados en el desarrollo y la producción de videojuegos.
+        </p>
+        <a href="https://www.ulp.edu.ar/paginas/oferta_educativa/tecnicaturas/ica_tddv.php" target="_blank" class="boton">
+            Información de la Carrera
+        </a>
+    </div>
+</div>
+
+<div class="mt-5 pt-3">
+    @Html.Partial("_TDDVGaleriaPartial", Model)
+</div>
+<script>
+    var urlGaleria = '@Url.Action("Index", "Tecnicatura_02")';
+</script>

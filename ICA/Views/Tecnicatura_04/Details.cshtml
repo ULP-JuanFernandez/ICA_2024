@@ -1,0 +1,238 @@
+﻿@model ICA.Models.Publicidad
+
+@{
+    ViewData["Title"] = "Detalles del Publicidad";
+    string thumbnailUrl;
+
+    if (Model.Video == null)
+    {
+        thumbnailUrl = Model.Imagen ?? Url.Content("~/img/sliders/NoImagen.png");
+    }
+    else
+    {
+        thumbnailUrl = !string.IsNullOrEmpty(Model.VideoId)
+            ? $"https://i.ytimg.com/vi_webp/{Model.VideoId}/0.webp"
+            : Url.Content("~/img/sliders/NoImagen.png");
+    }
+}
+<style>
+    header {
+        background: rgba(30, 71, 130, 1.0) !important;
+    }
+</style>
+
+<section class="project-section">
+    <div class="background-container" style="background-image: url('@thumbnailUrl');">
+        <div class="content-container">
+            <div class="image-container">
+                <a href="#"
+                   onclick="load('@Model.Imagen', '@Model.VideoId')"
+                   data-bs-toggle="modal"
+                   data-bs-target="#mediaModal"
+                   </a>
+                <img src="@thumbnailUrl" alt="Imagen del Proyecto" class="project-image">
+                <div class="button-style d-flex justify-content-center align-items-center">
+                    <a href="#"
+                       onclick="load('@Model.Imagen', '@Model.VideoId')"
+                       data-bs-toggle="modal"
+                       data-bs-target="#mediaModal"
+                       title="Ver contenido"
+                       style="color: #007bff; font-size: 54px;">
+                        <!-- Color y tamaño -->
+                        <i class="bi bi-eye"></i> <!-- Ícono con el color y tamaño aplicados -->
+                    </a>
+                </div>
+            </div>
+            <div class="text-container">
+                <h3 class="project-title">@Model.Titulo</h3>
+                <dd class="col-sm-12 text-center">
+                    @Html.DisplayFor(model => model.Descripcion)
+
+                </dd>
+                <div class="info-container">
+                    <div class="info-item">
+                        <dt>@Html.DisplayNameFor(model => model.Fecha): </dt>
+                        <dd>@Html.DisplayFor(model => model.Fecha)</dd>
+                    </div>
+                    <div class="info-item">
+                        <dt>@Html.DisplayNameFor(model => model.Genero): </dt>
+                        <dd>@Html.DisplayFor(model => model.Genero.Nombre)</dd>
+                    </div>
+                    <div class="info-item">
+                        <dt>@Html.DisplayNameFor(model => model.Etiqueta): </dt>
+                        <dd>@Html.DisplayFor(model => model.Etiqueta.Nombre)</dd>
+                    </div>
+                    <div class="info-item">
+                        <dt>@Html.DisplayNameFor(model => model.Creador): </dt>
+                        <dd>@Html.DisplayFor(model => model.Creador)</dd>
+                    </div>
+                </div>
+                <div class="bottom-container">
+                    <dt>@Html.DisplayNameFor(model => model.Integrantes):</dt>
+                    <dd>@Html.DisplayFor(model => model.Integrantes)</dd>
+                    <dt>@Html.DisplayNameFor(model => model.Materia):</dt>
+                    <dd>@Html.DisplayFor(model => model.Materia.Nombre)</dd>
+                </div>
+                <dd class="col-sm-12 eyever justify-content-center align-items-center">
+                    <a href="#"
+                       onclick="load('@Model.Imagen', '@Model.VideoId')"
+                       data-bs-toggle="modal"
+                       data-bs-target="#mediaModal"
+                       title="Ver contenido"
+                       style="color: #007bff; font-size: 54px;">
+                        <!-- Color y tamaño -->
+                        <i class="bi bi-eye "></i> <!-- Ícono con el color y tamaño aplicados -->
+                    </a>
+                </dd>
+            </div>
+        </div>
+    </div>
+</section>
+@* <section class="project-section">
+    <div class="background-container" style="background-image: url('@thumbnailUrl');">
+        <div class="content-container">
+            <div class="image-container">
+                <img src="@thumbnailUrl" alt="Imagen del Proyecto" class="project-image">
+                
+            </div>
+            <div class="text-container">
+                <h3 class="project-title">@Model.Titulo</h3>
+                <dl class="row">
+                    <dd class="col-sm-12">
+                        @Html.DisplayFor(model => model.Descripcion)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Fecha)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Fecha)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Genero)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Genero.Nombre)
+                    </dd>
+                    
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Materia)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Materia.Nombre)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Creador)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Creador)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Integrantes)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Integrantes)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Etiqueta)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Etiqueta.Nombre)
+                    </dd>
+                    <dd class="col-sm-12">
+                        <div class="button-style d-flex justify-content-center align-items-center">
+                            <a href="#"
+                               onclick="load('@Model.Imagen', '@Model.VideoId')"
+                               data-bs-toggle="modal"
+                               data-bs-target="#mediaModal"
+                               title="Ver contenido"
+                               style="color: #007bff; font-size: 54px;">
+                                <!-- Color y tamaño -->
+                                <i class="bi bi-eye"></i> <!-- Ícono con el color y tamaño aplicados -->
+                            </a>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+            
+        </div>
+    </div>
+</section> *@
+
+@* <section class="video-section">
+    <div class="video-container">
+        <!-- Spinner y mensaje de carga -->
+        <div id="loader" class="loader">
+            <div class="spinner"></div>
+            <p>Cargando video...</p>
+        </div>
+        @if (Model.Video == null)
+        {
+            <img src="@thumbnailUrl" alt="Miniatura" class="thumbnail" onload="document.getElementById('loader').style.display='none';" />
+        }
+        else
+        {
+            <!-- iFrame del video -->
+            <iframe src="https://www.youtube.com/embed/@Model.VideoId"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    class="video-iframe"
+                    onload="document.getElementById('loader').style.display='none';">
+            </iframe>
+        }
+    </div>
+</section> *@
+
+<section style="text-align: center; margin-top: 20px;">
+    <a asp-action="Index" class="boton" >
+        Volver
+    </a>
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" style="background-color: transparent; border: none;">
+            <div class="modal-body text-center position-relative">
+                <!-- Botón de cerrar con fondo oscuro transparente y SVG -->
+                <button type="button" class="custom-close-btn position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Cerrar" title="Cerrar"></button>
+                <div id="mediaContent">
+                    <!-- Aquí se cargará la imagen o el video dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Script para cargar imagen o video dinámicamente -->
+<script>
+    function load(imagenUrl, videoId) {
+        const mediaContent = document.getElementById('mediaContent');
+
+        // Verificar si el videoId está presente
+        if (videoId && videoId.trim() !== "") {
+            // Si el videoId está presente, cargar el video de YouTube
+            mediaContent.innerHTML = `
+                    <iframe width="100%" height="400"
+                            src="https://www.youtube.com/embed/${videoId}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                `;
+        } else if (imagenUrl && imagenUrl.trim() !== "") {
+            // Si solo hay una URL de imagen, cargar la imagen
+            mediaContent.innerHTML = `<img src="${imagenUrl}" class="img-fluid" alt="Imagen" />`;
+        } else {
+            // Si no hay ni video ni imagen, mostrar un mensaje de error
+            mediaContent.innerHTML = `<p>Error: No hay contenido para mostrar.</p>`;
+        }
+    }
+
+    // Evento para limpiar el contenido del modal cuando se cierra
+    document.getElementById('mediaModal').addEventListener('hide.bs.modal', function () {
+        const mediaContent = document.getElementById('mediaContent');
+        mediaContent.innerHTML = '';  // Al vaciar el contenido, el video se detendrá
+    });
+</script>

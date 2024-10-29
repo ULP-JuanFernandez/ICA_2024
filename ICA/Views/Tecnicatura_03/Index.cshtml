@@ -1,0 +1,25 @@
+﻿@model Paginacion_003
+@{
+    ViewData["Title"] = "Tecnicatura en Comunicación y Medios";
+}
+
+<div class="background-section">
+    <img src="~/img/tecnicaturas/Comunicacionmedios.jpg" alt="Imagen de fondo" class="background-image">
+    <div class="content">
+        <h1>@ViewData["Title"]</h1>
+        <h2>Presentación</h2>
+        <p>
+            En esta diplomatura encontrarás herramientas y estrategias para enfrentar los desafíos que poseen hoy las áreas soft de las organizaciones...
+        </p>
+        <a href="https://www.ulp.edu.ar/paginas/oferta_educativa/tecnicaturas/ica_tcm.php" target="_blank" class="boton">
+            Información de la Carrera
+        </a>
+    </div>
+</div>
+
+<div class="mt-5 pt-3">
+    @Html.Partial("_TCMGaleriaPartial", Model)
+</div>
+<script>
+    var urlGaleria = '@Url.Action("Index", "Tecnicatura_03")';
+</script>

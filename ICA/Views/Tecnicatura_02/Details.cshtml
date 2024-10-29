@@ -1,0 +1,97 @@
+﻿@model ICA.Models.Juego
+
+@{
+    ViewData["Title"] = "Detalles de la Película";
+    // var thumbnailUrl = !string.IsNullOrEmpty(Model.VideoId)
+    //              ? $"https://img.youtube.com/vi/{Model.VideoId}/0.jpg"
+    //              : @Url.Content("~/img/sliders/NoImagen.png");
+    var thumbnailUrl = !string.IsNullOrEmpty(Model.VideoId)
+          ? $"https://i.ytimg.com/vi_webp/{Model.VideoId}/2.webp"
+          : Url.Content("~/img/sliders/NoImagen.png");
+}
+<style>
+    header {
+        background: rgba(30, 71, 130, 1.0) !important;
+    }
+</style>
+<section class="project-section">
+    <div class="background-container" style="background-image: url('@thumbnailUrl');">
+        <div class="content-container">
+            <div class="image-container">
+                <img src="@thumbnailUrl" alt="Imagen del Proyecto" class="project-image">
+            </div>
+            <div class="text-container">
+                <h3 class="project-title">@Model.Titulo</h3>
+                <dd class="col-sm-12 text-center">
+                    @Html.DisplayFor(model => model.Descripcion)
+                </dd>
+                <div class="info-container">
+                    <div class="info-item">
+                        <dt>@Html.DisplayNameFor(model => model.Fecha): </dt>
+                        <dd>@Html.DisplayFor(model => model.Fecha)</dd>
+                    </div>
+                    <div class="info-item">
+                        <dt>@Html.DisplayNameFor(model => model.Genero): </dt>
+                        <dd>@Html.DisplayFor(model => model.Genero.Nombre)</dd>
+                    </div>
+                    <div class="info-item">
+                        <dt>@Html.DisplayNameFor(model => model.Etiqueta): </dt>
+                        <dd>@Html.DisplayFor(model => model.Etiqueta.Nombre)</dd>
+                    </div>
+                    <div class="info-item">
+                        <dt>@Html.DisplayNameFor(model => model.Desarrollador): </dt>
+                        <dd>@Html.DisplayFor(model => model.Desarrollador)</dd>
+                    </div>
+                    
+                </div>
+                <div class="bottom-container">
+                    <dt>@Html.DisplayNameFor(model => model.Integrantes):</dt>
+                    <dd>@Html.DisplayFor(model => model.Integrantes)</dd>
+                    <dt>@Html.DisplayNameFor(model => model.Materia):</dt>
+                    <dd>@Html.DisplayFor(model => model.Materia.Nombre)</dd>
+                </div>
+                <div class="info-container">
+                    <div class="info-item">
+                        <dt>@Html.DisplayNameFor(model => model.Link): </dt>
+                        @if (!string.IsNullOrEmpty(Model.Link))
+                        {
+                            <dd><a href="@Model.Link" target="_blank">Abrir enlace</a></dd>
+                        }
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+<section class="video-section">
+    <div class="video-container">
+        <!-- Spinner y mensaje de carga -->
+        <div id="loader" class="loader">
+            <div class="spinner"></div>
+            <p>Cargando video...</p>
+        </div>
+        @if (Model.Video == null)
+        {
+            <img src="@thumbnailUrl" alt="Miniatura" class="thumbnail" onload="document.getElementById('loader').style.display='none';" />
+        }
+        else
+        {
+            <!-- iFrame del video -->
+            <iframe src="https://www.youtube.com/embed/@Model.VideoId"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    class="video-iframe"
+                    onload="document.getElementById('loader').style.display='none';">
+            </iframe>
+        }
+    </div>
+</section>
+
+<section style="text-align: center; margin-top: 20px;">
+
+    <a asp-action="Index" class="boton">
+        Volver
+    </a>
+</section>

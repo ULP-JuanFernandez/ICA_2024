@@ -1,0 +1,70 @@
+﻿@model Paginacion_003
+<div id="gallery-container">
+    <div class="title-section">
+        <h3 class="linea">Galería de Imágenes</h3>
+    </div>
+
+    <div class="my-filter-container">
+        <div class="row">
+            <form id="formEtiqueta" asp-action="Index" method="get" asp-controller="Tecnicatura_03">
+                <div class="form-group">
+                    @Html.DropDownList("IdEtiqueta", Model.EtiquetasSelectList,
+                             "Seleccione una Etiqueta",
+                             new { id = "filtroEtiqueta", @class = "form-control" })
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <form id="formGenero" asp-action="Index" method="get" asp-controller="Tecnicatura_03">
+                <div class="form-group">
+                    @Html.DropDownList("IdGenero", Model.GenerosSelectList,
+                             "Seleccione un Género",
+                             new { id = "filtroGenero", @class = "form-control" })
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card-container" id="cardContainer">
+        @foreach (var item in Model.Comunicaciones)
+        {
+            var thumbnailUrl = !string.IsNullOrEmpty(item.VideoId)
+            ? $"https://img.youtube.com/vi/{item.VideoId}/0.jpg"
+            : Url.Content("~/img/sliders/NoImagen.png");
+
+            <div class="card-item">
+                <a asp-controller="Tecnicatura_03" asp-action="Details" asp-route-id="@item.Id" class="card-link">
+                    <div class="card-thumbnail">
+                        <img src="@thumbnailUrl" alt="@item.Titulo" onerror="this.src='@Url.Content("~/img/sliders/NoImagen.png")';" />
+                        <div class="card-overlay card-overlay1">
+                            <h4 class="card-title1">@item.Titulo</h4>
+                        </div>
+                        <div class="card-overlay card-overlay2">
+                            <h4 class="card-title">@item.Titulo</h4>
+                            <p class="card-description">@item.Descripcion</p>
+                        </div>
+                    </div>
+                </a>
+                <span class="card-tag">@item.Etiqueta.Nombre</span>
+                <span class="card-tagG">@item.Genero.Nombre</span>
+            </div>
+        }
+    </div>
+
+    <div class="pagination-container">
+        @if (Model.PaginaActual > 1)
+        {
+            <a href="@Url.Action("Index", new { IdEtiqueta = Model.EtiquetaSeleccionado, IdGenero = Model.GeneroSeleccionado, pagina = Model.PaginaActual - 1 })" aria-label="Página anterior">Anterior</a>
+        }
+
+        @for (int i = 1; i <= Model.TotalPaginas; i++)
+        {
+            <a href="@Url.Action("Index", new { IdEtiqueta = Model.EtiquetaSeleccionado, IdGenero = Model.GeneroSeleccionado, pagina = i })" class="@(i == Model.PaginaActual ? "current" : "")">@i</a>
+        }
+
+        @if (Model.PaginaActual < Model.TotalPaginas)
+        {
+            <a href="@Url.Action("Index", new { IdEtiqueta = Model.EtiquetaSeleccionado, IdGenero = Model.GeneroSeleccionado, pagina = Model.PaginaActual + 1 })" aria-label="Página siguiente">Siguiente</a>
+        }
+    </div>
+</div>

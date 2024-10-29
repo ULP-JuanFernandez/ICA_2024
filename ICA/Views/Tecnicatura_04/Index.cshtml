@@ -1,0 +1,34 @@
+﻿@model Paginacion_004
+
+@{
+    ViewData["Title"] = "Tecnicatura en Publicidad";
+}
+
+<div class="background-section">
+    <img src="~/img/tecnicaturas/TecnicaturaPublicidad.jpg" alt="Imagen de fondo" class="background-image">
+    <div class="content">
+        <h1>@ViewData["Title"]</h1>
+        <h2>Presentación</h2>
+        <p>
+            Publicidad abarca un enfoque global, es una carrera práctica, dinámica que se presenta bajo la modalidad 
+            "learning by doing" (aprender haciendo)  enfocada hacia una formación integral de comunicación visual, creatividad, 
+            transformación digital y el planning de negocios, que le permita al estudiante insertarse dentro del entorno laboral, 
+            de modo ágil y seguro. La doble titulación brinda herramientas prácticas y conocimientos específicos para el desarrollo de proyectos propios o ajenos, 
+            liderazgo y desarrollo de todo tipo de proyectos relacionados al ámbito de la comunicación, el diseño gráfico y la publicidad. 
+            Facilita las competencias adecuadas para el diseño digital de mensajes simbólicos, conceptuales y persuasivos, 
+            adecuados a este nuevo lenguaje de constante movimiento a través de los nuevos medios de comunicación y las nuevas formas de interacción entre las personas, 
+            formando al estudiante con las nuevas herramientas tecnológicas para el diseño de los nuevos entornos audiovisuales, textuales, gráficos y 3D, 
+            con una visión general basada en aspectos teóricos y prácticos de la comunicación visual, la publicidad, la creatividad y el planning.
+        </p>
+        
+        <a href="https://ulp.edu.ar/paginas/oferta_educativa/tecnicaturas/ica_tp.php" target="_blank" class="boton">
+            Información de la Carrera
+        </a>
+    </div>
+</div>
+<div class="mt-5 pt-3">
+    @Html.Partial("_TPGaleriaPartial", Model)
+</div>
+<script>
+    var urlGaleria = '@Url.Action("Index", "Tecnicatura_04")';
+</script>

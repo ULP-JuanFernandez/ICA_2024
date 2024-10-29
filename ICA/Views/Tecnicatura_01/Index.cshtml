@@ -1,0 +1,35 @@
+﻿@model Paginacion_001
+@{
+    ViewData["Title"] = "Tecnicatura en Producción y Realización Audiovisual";
+}
+
+<div class="background-section">
+    <img src="~/img/tecnicaturas/audiovisual.jpg" alt="Imagen de fondo" class="background-image"> 
+    <div class="content">
+        <h1>@ViewData["Title"]</h1>
+        <h2>Presentación</h2>
+        <p>
+            Esta Tecnicatura se propone enseñar el manejo del lenguaje audiovisual,
+            sus códigos y las tecnologías propias del campo, para desempeñarse en diferentes
+            roles de la realización integral de producciones multimediales (televisión, cine,
+            artes, espectáculos e Internet). Así mismo, capacita en la gestión de etapas de un
+            proceso de planificación y desarrollo integral de proyectos audiovisuales, tanto
+            en sus aspectos técnicos como estéticos; promueve la coordinación de equipos
+            interdisciplinarios de trabajo donde el alumno manifiesta sensibilidad y compromiso
+            social sustentado en la libertad de expresión y se enseña la aplicación de normas
+            legales para administrar y organizar la mercadotecnia en torno al campo audiovisual
+            a partir de los objetivos del trabajo.
+        </p>
+        <a href="https://www.ulp.edu.ar/paginas/oferta_educativa/tecnicaturas/ica_tpra.php" target="_blank" class="boton">
+            Información de la Carrera
+        </a>
+    </div>
+</div>
+
+<div class="mt-5 pt-3">
+    @Html.Partial("_GaleriaPartial", Model)
+</div>
+<script>
+    var urlGaleria = '@Url.Action("Index", "Tecnicatura_01")';
+</script>
+

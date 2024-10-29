@@ -1,0 +1,348 @@
+﻿@model ICA.Models.Inicio
+
+@{
+    ViewData["Title"] = "Index";
+    var slides = Model.Sliders; // Asegúrate de usar 'Model.Sliders' en lugar de 'slides' directamente
+}
+
+<div id="hero" class="carousel slide">
+    <div class="carousel-indicators">
+        @if (slides != null && slides.Any())
+        {
+            for (int i = 0; i < slides.Count(); i++)
+            {
+                <button type="button" data-bs-target="#hero" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")" aria-label="Slide @(i + 1)"></button>
+            }
+        }
+    </div>
+    <div class="carousel-inner">
+        @if (slides != null && slides.Any())
+        {
+            var isActive = true;
+            foreach (var slide in slides)
+            {
+                <div class="carousel-item @(isActive ? "active" : "")">
+                    <img src="@slide.Imagen" class="d-block w-100" alt="@slide.Nombre">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>@slide.Nombre</h5>
+                        <p class="text-center">@slide.Descripcion</p>
+                    </div>
+                </div>
+                isActive = false;
+            }
+        }
+        else
+        {
+            <div class="carousel-item active">
+                <img src="~/img/Sliders/NoImagen.png" class="d-block w-100" alt="Placeholder">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>No hay slides disponibles</h5>
+                    <p>No hay contenido para mostrar.</p>
+                </div>
+            </div>
+        }
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#hero" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#hero" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+
+    <div class="menu-flotante float-lg-none">
+        <nav>
+            <ol class="menu-list">
+                <li><h3 style="color:white">Tecnicaturas</h3></li>
+                <hr style="border: 1px solid white; margin: 3px 0;" />
+                <li><a href="#page-1">Producción y Realización Audiovisual</a></li>
+                <li><a href="#page-2">Diseño Digital y Videojuegos</a></li>
+                <li><a href="#page-3">Comunicación y Medios</a></li>
+                <li><a href="#page-4">Publicidad</a></li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+
+@* -----------------------------------------------Producción y Realización Audiovisual----------------------------------------------- *@
+<div class="mt-5 pt-3 tprav" id="page-1">
+    <!-- Spinner -->
+    <div id="loading-spinner" class="spinner-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <h2 class="text-center">Producción y Realización Audiovisual</h2>
+    <div class="card-container">
+        @if (Model.Peliculas != null && Model.Peliculas.Any())
+        {
+            @foreach (var item in Model.Peliculas)
+            {
+                var thumbnailUrl = !string.IsNullOrEmpty(item.VideoId)
+                ? $"https://img.youtube.com/vi/{item.VideoId}/0.jpg"
+                : @Url.Content("~/img/sliders/NoImagen.png");
+
+                <div class="card-item">
+                    <a asp-controller="Tecnicatura_01" asp-action="Details" asp-route-id="@item.Id" class="card-link">
+                        <div class="card-thumbnail">
+                            <img src="@thumbnailUrl" alt="Video Thumbnail" onerror="this.src='@Url.Content("~/img/sliders/NoImagen.png")';" />
+                            <div class="card-overlay card-overlay1">
+                                <h4 class="card-title1">@item.Titulo</h4>
+                            </div>
+                            <div class="card-overlay card-overlay2">
+                                <h4 class="card-title">@item.Titulo</h4>
+                                <p class="card-description">@item.Sinopsis</p>
+                            </div>
+                        </div>
+                    </a>
+                    <span class="card-tag">@item.Etiqueta.Nombre</span>
+                    <span class="card-tagG">@item.Genero.Nombre</span>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center">No hay videos disponibles en esta categoría.</p>
+        }
+    </div>
+    <div class="text-center p-3">
+        <a asp-controller="Tecnicatura_01" asp-action="Index" title="Más" class="icon-link">
+            <i class="bi bi-plus-circle-fill"></i>
+        </a>
+    </div>
+</div>
+@* -----------------------------------------------Diseño Digital y Videojuegos----------------------------------------------- *@
+<div class="mt-5 pt-3 tddvj" id="page-2">
+    <h2 class="text-center">Diseño Digital y Videojuegos</h2>
+    <div class="card-container">
+        @if (Model.Juegos != null && Model.Juegos.Any())
+        {
+            @foreach (var item in Model.Juegos)
+            {
+                var thumbnailUrl = !string.IsNullOrEmpty(item.VideoId)
+                ? $"https://img.youtube.com/vi/{item.VideoId}/maxresdefault.jpg"
+                : Url.Content("~/img/Sliders/NoImagen.png"); // URL de una imagen por defecto
+
+                <div class="card-item">
+                    <a asp-controller="Tecnicatura_02" asp-action="Details" asp-route-id="@item.Id" class="card-link">
+                        <div class="card-thumbnail">
+                            <img src="@thumbnailUrl"
+                                 alt="Thumbnail de video"
+                                 onerror="this.onerror=null; this.src='~/img/Sliders/NoImagen.png';" />
+                            <div class="card-overlay card-overlay1">
+                                <h4 class="card-title1">@item.Titulo</h4>
+                            </div>
+                            <div class="card-overlay card-overlay2">
+                                <h4 class="card-title">@item.Titulo</h4>
+                                <p class="card-description">@item.Descripcion</p>
+                            </div>
+                        </div>
+                    </a>
+                    <span class="card-tag">@item.Etiqueta.Nombre</span>
+                    <span class="card-tagG">@item.Genero.Nombre</span>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center">No hay videos disponibles en esta categoría.</p>
+        }
+    </div>
+    <div class="text-center p-3">
+        <a asp-controller="Tecnicatura_02" asp-action="Index" title="Más" class="icon-link">
+            <i class="bi bi-plus-circle-fill"></i>
+        </a>
+    </div>
+</div>
+@* -----------------------------------------------Comunicación y Medios----------------------------------------------- *@
+<div class="mt-5 pt-3 tcm" id="page-3">
+    <h2 class="text-center">Comunicación y Medios</h2>
+    <div class="card-container">
+        @if (Model.Comunicaciones != null && Model.Comunicaciones.Any())
+        {
+            @foreach (var item in Model.Comunicaciones)
+            {
+                var thumbnailUrl = !string.IsNullOrEmpty(item.VideoId)
+                ? $"https://img.youtube.com/vi/{item.VideoId}/maxresdefault.jpg"
+                : Url.Content("~/img/Sliders/NoImagen.png"); // URL de una imagen por defecto
+
+                <div class="card-item">
+                    <a asp-controller="Tecnicatura_03" asp-action="Details" asp-route-id="@item.Id" class="card-link">
+                        <div class="card-thumbnail">
+                            <img src="@thumbnailUrl"
+                                 alt="Thumbnail de video"
+                                 onerror="this.onerror=null; this.src='~/img/Sliders/NoImagen.png';" />
+                            <div class="card-overlay card-overlay1">
+                                <h4 class="card-title1">@item.Titulo</h4>
+                            </div>
+                            <div class="card-overlay card-overlay2">
+                                <h4 class="card-title">@item.Titulo</h4>
+                                <p class="card-description">@item.Descripcion</p>
+                            </div>
+                        </div>
+                    </a>
+                    <span class="card-tag">@item.Etiqueta.Nombre</span>
+                    <span class="card-tagG">@item.Genero.Nombre</span>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center">No hay videos disponibles en esta categoría.</p>
+        }
+    </div>
+    <div class="text-center p-3">
+        <a asp-controller="Tecnicatura_03" asp-action="Index" title="Más" class="icon-link">
+            <i class="bi bi-plus-circle-fill"></i>
+        </a>
+    </div>
+</div>
+@* -----------------------------------------------Publicidad----------------------------------------------- *@
+<div class="mt-5 pt-3 tpro" id="page-4">
+    <h2 class="text-center">Publicidad</h2>
+    <div class="card-container">
+        @if (Model.Publicidades != null && Model.Publicidades.Any())
+        {
+            @foreach (var item in Model.Publicidades)
+            {
+                string thumbnailUrl;
+
+                if (item.Video == null)
+                {
+                    thumbnailUrl = item.Imagen ?? Url.Content("~/img/sliders/NoImagen.png");
+
+                }
+                else
+                {
+                    thumbnailUrl = !string.IsNullOrEmpty(item.VideoId)
+                    ? $"https://img.youtube.com/vi/{item.VideoId}/0.jpg"
+                    : Url.Content("~/img/sliders/NoImagen.png");
+
+                }
+
+                <div class="card-item">
+                    <a asp-controller="Tecnicatura_04" asp-action="Details" asp-route-id="@item.Id" class="card-link">
+                        <div class="card-thumbnail">
+                            <img src="@thumbnailUrl"
+                                 alt="Thumbnail de video"
+                                 onerror="this.onerror=null; this.src='~/img/Sliders/NoImagen.png';" />
+                            <div class="card-overlay card-overlay1">
+                                <h4 class="card-title1">@item.Titulo</h4>
+                            </div>
+                            <div class="card-overlay card-overlay2">
+                                <h4 class="card-title">@item.Titulo</h4>
+                                <p class="card-description">@item.Descripcion</p>
+                            </div>
+                        </div>
+                    </a>
+                    <span class="card-tag">@item.Etiqueta.Nombre</span>
+                    <span class="card-tagG">@item.Genero.Nombre</span>
+                    @if (item.Video == null)
+                    {
+                        <span class="card-ImagenVidideo"><i class="bi bi-camera"></i></span>
+                    }
+                    else
+                    {
+                        <span class="card-ImagenVidideo"><i class="bi bi-camera-reels"></i></span>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center">No hay videos disponibles en esta categoría.</p>
+        }
+    </div>
+    <div class="text-center p-3">
+        <a asp-controller="Tecnicatura_04" asp-action="Index" title="Más" class="icon-link">
+            <i class="bi bi-plus-circle-fill"></i>
+        </a>
+    </div>
+</div>
+
+<section id="contacto" class="contact section-bg">
+    <div class="container">
+        <div class="section-title">
+            <h2>Contacto</h2>
+            <p class="text-center">¿Tenes consultas? Escribenos:</p>
+        </div>
+        <div class="row contact-info">
+            <div class="col-md-4">
+                 @* <div class="contact-address">
+                    <i class="bi bi-geo-alt"></i>
+                    <h3>Dirección</h3>
+                    <address>Av. Universitaria s/n, Ciudad de La Punta, San Luis</address>
+                </div>  *@
+            </div>
+           <div class="col-md-4">
+                @* <div class="contact-phone">
+                    <i class="bi bi-phone"></i>
+                    <h3>Teléfonos</h3>
+                    <p><a href="tel:+542664452000">+54 0266 4452 000<br> Int: 6250 - 6108</a></p>
+                </div> *@
+               @*  <div class="contact-address">
+                    <i class="bi bi-geo-alt"></i>
+                    <h3>Dirección</h3>
+                    <address>Av. Universitaria s/n, Ciudad de La Punta, San Luis</address>
+                </div> *@
+            </div>
+            <div class="col-md-4">
+                @* <div class="contact-email">
+                    <i class="bi bi-envelope"></i>
+                    <h3>Email</h3>
+                    <p><a href="mailto:mesainformativa@ulp.edu.ar">mesainformativa@ulp.edu.ar</a></p> 
+                </div>*@
+            </div> 
+        </div>
+        <div class="form">
+            <form action="@Url.Action("SendMessage", "Contact")" method="post" role="form" class="php-email-form">
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Nombre" data-rule="minlen:4" data-msg="Ingrese al menos 4 caracteres">
+                    </div>
+                    <div class="col-md-6 form-group mt-3 mt-md-0">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Email" data-rule="email" data-msg="Ingrese un email valido">
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <input type="text" class="form-control" name="subject" id="subject" placeholder="Asunto" required="">
+                </div>
+                <div class="form-group mt-3">
+                    <textarea class="form-control" name="message" rows="5" placeholder="Mensaje" required=""></textarea>
+                </div>
+                <div class="my-3">
+                    <div class="loading">Cargando</div>
+                    <div class="error-message"></div>
+                    <div class="sent-message">Su mensaje ha sido enviado. Muchas gracias!</div>
+                </div>
+                <div style="text-align:center"><button class="button-Enviar" type="submit">Enviar</button></div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Añade un evento de clic a todos los enlaces con href que comiencen con #
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault(); // Previene el comportamiento por defecto del enlace
+
+                // Obtiene el ID del elemento al que se hace referencia
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    // Desplaza suavemente al elemento y lo centra en la pantalla
+                    window.scrollTo({
+                        top: targetElement.offsetTop - (window.innerHeight / 2) + (targetElement.offsetHeight / 2),
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
+</script>
+

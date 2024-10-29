@@ -1,0 +1,361 @@
+﻿@model IEnumerable<ICA.Models.Proyecto>
+
+@{
+    ViewData["Title"] = "Lista de Proyectos";
+}
+@{
+    
+    var tecnicaturas = ViewBag.VBTecnicaturas as IList<ICA.Models.Tecnicatura>;
+
+   
+   
+    ViewBag.Title = "Lista de Proyectos";
+    var filtroTecnicatura = ViewBag.FiltroTecnicatura?.ToString(); // Obtén el valor del filtro del ViewBag
+
+}
+<br />
+<style>
+    .truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px; /* Ajusta el ancho máximo según sea necesario */
+    }
+</style>
+
+<div class="container-fluid mt-5">
+    <h1>@ViewData["Title"]</h1>
+
+    <div class="mb-3">
+        <a class="btn btn-primary" asp-action="Create">Crear Nuevo</a>
+    </div>
+
+    <form asp-action="Index" method="get" class="mb-3">
+        <div class="form-group">
+            <label for="filtroTecnicatura">Filtrar por Tecnicatura:</label>
+            <select name="filtroTecnicatura" id="filtroTecnicatura" class="form-control">
+                <option value="">Seleccione una tecnicatura</option>
+                @if (ViewBag.VBTecnicaturas != null)
+                {
+                    foreach (var t in (IList<Tecnicatura>)ViewBag.VBTecnicaturas)
+                    {
+                        <option value="@t.Id">@t.Nombre</option>
+                    }
+                }
+                else
+                {
+                    <option value="">No hay tecnicaturas disponibles</option>
+                }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Filtrar</button>
+    </form>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            No hay proyectos disponibles.
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                    <th>@Html.DisplayNameFor(model => model.Creador)</th>
+                    <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+                    <th>@Html.DisplayNameFor(model => model.Descripcion)</th>
+                    <th>@Html.DisplayNameFor(model => model.Genero)</th>
+                    <th>@Html.DisplayNameFor(model => model.Tecnicatura)</th>
+                    <th>@Html.DisplayNameFor(model => model.Link)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Creador)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Fecha)</td>
+                        <td>
+                            <div class="description-text">
+                                @Html.DisplayFor(modelItem => item.Descripcion)
+                            </div>
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Genero.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Tecnicatura.Nombre)</td>
+                        <td>
+                            @{
+                                var videoId = Html.DisplayFor(modelItem => item.VideoId);
+                                var videoUrl = $"https://www.youtube.com/watch?v={videoId}";
+                            }
+                            <div class="grid-item">
+                                <div class="video">
+                                    <iframe src="https://www.youtube.com/embed/@videoId"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen
+                                            title="Video: @videoId"></iframe>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-warning btn-sm" }) |
+                            @Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm" }) |
+                            @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<div class="container">
+    <div class="row py-5">
+        <div class="col-12">
+            <table id="example" class="table table-hover responsive nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Creador</th>
+                        <th>Fecha</th>
+                        <th>Género</th>
+                        <th>Tecnicatura</th>
+                        <th>Link</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var proyecto in Model)
+                    {
+                        <tr>
+                            <td>@proyecto.Nombre</td>
+                            <td>
+                                <div class="truncate" title="@proyecto.Descripcion">
+                                    @proyecto.Descripcion
+                                </div>
+                                <a href="#" data-toggle="modal" data-target="#descriptionModal" data-description="@proyecto.Descripcion">Ver más</a>
+                            </td>
+                            <td>@proyecto.Creador</td>
+                            <td>@proyecto.Fecha.ToString("dd/MM/yyyy")</td>
+                            <td>@proyecto.Genero.Nombre</td>
+                            <td>@proyecto.Tecnicatura.Nombre</td>
+                            <td><a href="@proyecto.Link">View Link</a></td>
+                            <td class="d-flex justify-content-center">
+                                <div class="btn-group" role="group">
+
+                                    <a asp-action="Edit" asp-route-id="@proyecto.Id" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@proyecto.Id" class=" btn btn-danger"><i class="fas fa-minus-square"></i></a>
+                                    <a asp-action="Details" asp-route-id="@proyecto.Id" class=" btn btn-danger"><i class="fas fa-minus-see"></i></a>
+                                </div>
+
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row py-5">
+        <div class="col-12">
+            <table id="example" class="table table-hover table-responsive" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Creador</th>
+                        <th>Fecha</th>
+                        <th>Género</th>
+                        <th>Tecnicatura</th>
+                        <th>Link</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var proyecto in Model)
+                    {
+                        <tr>
+                            <td>@proyecto.Nombre</td>
+                            <td>
+                                <div class="truncate" title="@proyecto.Descripcion">
+                                    @proyecto.Descripcion
+                                </div>
+                                <a href="#" data-toggle="modal" data-target="#descriptionModal" data-description="@proyecto.Descripcion" class="btn btn-link p-0">Ver más</a>
+                            </td>
+                            <td>@proyecto.Creador</td>
+                            <td>@proyecto.Fecha.ToString("dd/MM/yyyy")</td>
+                            <td>@proyecto.Genero.Nombre</td>
+                            <td>@proyecto.Tecnicatura.Nombre</td>
+                            <td><a href="@proyecto.Link" target="_blank">Ver Enlace</a></td>
+                            <td class="d-flex justify-content-center">
+                                <div class="btn-group" role="group" aria-label="Acciones">
+                                    <a asp-action="Edit" asp-route-id="@proyecto.Id" class="btn btn-primary" aria-label="Editar proyecto">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@proyecto.Id" class="btn btn-danger" aria-label="Eliminar proyecto">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@proyecto.Id" class="btn btn-info" aria-label="Ver detalles del proyecto">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="descriptionModal" tabindex="-1" role="dialog" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="descriptionModalLabel">Descripción Completa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="fullDescription"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card-body">
+    <h5 class="card-title text-primary">Lista actual de inmuebles</h5>
+    <table class="table table-hover table-bordered w-100" id="dtHorizontalVertical">
+        <thead class="table-danger">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descripcion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fecha)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Link)
+                </th>
+                @* <th>
+                    @Html.DisplayNameFor(model => model.Superficie)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Latitud)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Longitud)
+                </th>
+                <th>
+                    @*Html.DisplayNameFor(model => model.PropietarioId)
+                    Propietario
+                </th> @
+                @* <th style="display:none;">
+                    @Html.DisplayNameFor(model => model.Propietario.Dni)
+                </th>
+                <th></th> *@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fecha)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Link)
+                    </td>
+                   @*  <td>
+                        @Html.DisplayFor(modelItem => item.Superficie)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Latitud)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Longitud)
+                    </td>
+                    <td>
+                        @*Html.DisplayFor(modelItem => item.PropietarioId)
+                        (item.Propietario.Nombre + " " + item.Propietario.Apellido)
+                    </td>
+                    <td style="display:none;">
+                        Html.DisplayFor(modelItem => item.Propietario.Dni)
+                    </td> *@
+                    <td class="d-flex justify-content-center">
+                        <div class="btn-group" role="group">
+
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class=" btn btn-danger"><i class="fas fa-minus-square"></i></a>
+                            @*@Html.ActionLink("Details", "Details", new { id=item.InmuebleId}) |*@
+                        </div>
+
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#example").DataTable({
+                aaSorting: [],
+                responsive: true,
+                columnDefs: [
+                    {
+                        responsivePriority: 1,
+                        targets: 0
+                    },
+                    {
+                        responsivePriority: 2,
+                        targets: -1
+                    }
+                ]
+            });
+
+            $(".dataTables_filter input")
+                .attr("placeholder", "Search here...")
+                .css({
+                    width: "300px",
+                    display: "inline-block"
+                });
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $('#descriptionModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var description = button.data('description');
+                var modal = $(this);
+                modal.find('#fullDescription').text(description);
+            });
+        });
+    </script>
+}
