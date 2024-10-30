@@ -35,9 +35,6 @@ builder.Services.AddScoped<IRepositorioPublicidad, RepositorioPublicidad>();
 builder.Services.AddScoped<RepositorioPublicidad, RepositorioPublicidad>();
 
 
-
-
-
 builder.Services.AddScoped<IRepositorioSliders, RepositorioSliders>();
 builder.Services.AddScoped<RepositorioSliders, RepositorioSliders>();
 
