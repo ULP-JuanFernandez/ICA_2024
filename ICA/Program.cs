@@ -4,9 +4,9 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Configurar el contexto de la base de datos
+// Configurar el contexto de la base de datos
 builder.Services.AddDbContext<DbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 // Registrar la implementación del servicio IRepositorioInfo
@@ -57,13 +57,12 @@ else
     app.UseHsts();
 }
 
+// Configurar el manejo de errores
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
 app.UseHttpsRedirection();
-
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.UseStaticFiles(); // Habilita la configuración de archivos estáticos
 
 var sharedImagesPath = @"C:\SharedImages";
@@ -81,5 +80,8 @@ app.UseStaticFiles(new StaticFileOptions
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Redirigir la raíz a la página en construcción
+app.MapGet("/", () => Results.Redirect("/Home/EnConstruccion"));
 
 app.Run();

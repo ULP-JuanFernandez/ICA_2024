@@ -40,6 +40,10 @@ namespace ICA.Controllers
 
             return View(inicioModel);
         }
-
+        public IActionResult EnConstruccion()
+        {
+            return View();
+        }
+       
     }
 }
